@@ -1,0 +1,173 @@
+PROJETO: SLICEX AUDIO CONVERTER
+================================
+
+STACK
+-----
+Backend:
+- Java 21
+- Spring Boot
+- Maven
+
+Frontend:
+- React
+- TypeScript
+
+
+SPRING INITIALIZR
+-----------------
+Dependências:
+- Spring Web
+- Validation
+- Lombok
+- Spring Boot DevTools
+- Actuator
+- Spring Configuration Processor
+
+
+CONFIGURAÇÃO DO PROJETO
+-----------------------
+group:
+com.slicex
+
+artifact:
+audio-converter
+
+name:
+slicex-audio-converter
+
+package:
+com.slicex.audioconverter
+
+
+PADRÃO ARQUITETURAL
+-------------------
+DDD Light
+
+Objetivo:
+- Separar responsabilidades
+- Facilitar crescimento do projeto
+- Manter código simples
+- Evitar complexidade excessiva
+
+
+ESTRUTURA INICIAL DO BACKEND
+----------------------------
+
+src/main/java/com/slicex/audioconverter
+│
+├── SlicexAudioConverterApplication.java
+│
+├── application
+│   └── audio
+│       ├── ConvertAudioUseCase.java
+│       └── ConvertAudioCommand.java
+│
+├── domain
+│   └── audio
+│       ├── AudioFormat.java
+│       ├── AudioConversion.java
+│       └── AudioConverter.java
+│
+├── infrastructure
+│   └── audio
+│       └── FfmpegAudioConverter.java
+│
+├── presentation
+│   └── audio
+│       ├── AudioConversionController.java
+│       ├── dto
+│       │   ├── ConvertAudioRequest.java
+│       │   └── ConvertAudioResponse.java
+│       │
+│       └── exception
+│           └── RestExceptionHandler.java
+│
+└── config
+    └── FfmpegConfig.java
+
+
+RESPONSABILIDADE DE CADA CAMADA
+-------------------------------
+
+presentation
+------------
+Responsável por:
+- Endpoints REST
+- Receber requisições HTTP
+- Upload/download de arquivos
+- DTOs
+- Tratamento de erros HTTP
+
+application
+-----------
+Responsável por:
+- Casos de uso
+- Orquestração das regras
+- Fluxo da aplicação
+
+domain
+------
+Responsável por:
+- Regras de negócio
+- Contratos/interfaces
+- Entidades
+- Enum de formatos suportados
+
+infrastructure
+--------------
+Responsável por:
+- Implementações externas
+- Integração com FFmpeg
+- Acesso ao sistema operacional
+- ProcessBuilder
+
+config
+------
+Responsável por:
+- Beans
+- Configurações gerais
+- Variáveis externas
+
+
+CONVERSÃO DE ÁUDIO
+------------------
+Inicialmente:
+- WAV -> MP3
+- MP3 -> WAV
+
+Ferramenta:
+- FFmpeg
+
+
+ENDPOINT INICIAL
+----------------
+
+POST /api/audio/conversions
+
+Recebe:
+- multipart file
+- formato destino
+
+Retorna:
+- arquivo convertido
+
+
+EXEMPLO DE FLUXO
+----------------
+Controller
+    ↓
+UseCase
+    ↓
+AudioConverter (interface do domínio)
+    ↓
+FfmpegAudioConverter (implementação)
+    ↓
+FFmpeg
+
+
+OBJETIVO DO MVP
+----------------
+- Upload de áudio
+- Conversão entre WAV e MP3
+- Download do arquivo convertido
+- Estrutura limpa e escalável
