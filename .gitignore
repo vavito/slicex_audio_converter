@@ -1,3 +1,6 @@
-.idea
-projeto_slicex_audio_converter.pdf
-projeto_slicex_audio_converter.txt
+# Ignore specific root files
+/projeto_slicex_audio_converter.pdf
+/projeto_slicex_audio_converter.txt
+
+# Ignore IntelliJ IDEA project files at the repository root
+/.idea/
