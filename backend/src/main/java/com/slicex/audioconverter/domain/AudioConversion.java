@@ -43,33 +43,56 @@ public class AudioConversion {
 
     public void mudarFormatoPreConversao(AudioFormat formatoPreConversao) {
         if (formatoPreConversao == null) {
-            throw new DomainException("O formato pré-conversão é obrigatório");
+            throw new DomainException("O formato pré-conversão é obrigatório.");
         }
         else if (formatoPreConversao == this.formatoPosConversao) {
             throw new DomainException("O formato de origem e destino não podem ser iguais.");
         }
+        else if (this.statusDaConversao != AudioConversionStatus.PENDENTE) {
+            throw new DomainException("Não é possível alterar formatos após iniciar a conversão.");
+        }
+
         this.formatoPreConversao = formatoPreConversao;
     }
 
     public void mudarFormatoPosConversao(AudioFormat formatoPosConversao) {
         if (formatoPosConversao == null) {
-            throw new DomainException("O formato pós-conversão é obrigatório");
+            throw new DomainException("O formato pós-conversão é obrigatório.");
         }
         else if (formatoPosConversao == this.formatoPreConversao) {
             throw new DomainException("O formato de origem e destino não podem ser iguais.");
         }
+        else if (this.statusDaConversao != AudioConversionStatus.PENDENTE) {
+            throw new DomainException("Não é possível alterar formatos após iniciar a conversão.");
+        }
+
         this.formatoPosConversao = formatoPosConversao;
     }
 
     public void iniciarProcessamento() {
+        if (this.statusDaConversao != AudioConversionStatus.PENDENTE) {
+            throw new DomainException("A conversão só pode iniciar se estiver pendente.");
+        }
+
         this.statusDaConversao = AudioConversionStatus.EM_PROCESSAMENTO;
     }
 
     public void concluir() {
+        if (this.statusDaConversao != AudioConversionStatus.EM_PROCESSAMENTO) {
+            throw new DomainException("A conversão só pode concluir se já estiver em processamento.");
+        }
+
         this.statusDaConversao = AudioConversionStatus.CONCLUIDO;
     }
 
     public void falhar() {
+        if (this.statusDaConversao == AudioConversionStatus.CONCLUIDO) {
+            throw new DomainException("A conversão só pode falhar se não estiver concluída.");
+        } else if (this.statusDaConversao == AudioConversionStatus.FALHOU) {
+
+            throw new DomainException("A conversão já foi marcada como falha.");
+        }
+
         this.statusDaConversao = AudioConversionStatus.FALHOU;
     }
 }
