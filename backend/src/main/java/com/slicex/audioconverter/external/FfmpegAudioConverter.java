@@ -6,17 +6,24 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 
 @Component
 public class FfmpegAudioConverter {
 
-    public File convert(File inputFile, AudioFormat formatoDestino) {
+    public File convert(File inputFile, AudioFormat formatoDestino, String nomeDoArquivoOriginal) {
         try {
-            File outputFile = Files.createTempFile(
-                    "converted-",
-                    "." + formatoDestino.name().toLowerCase()
-            ).toFile();
+            validarNomeDoArquivo(nomeDoArquivoOriginal);
+
+            String extensaoDestino = formatoDestino.name().toLowerCase();
+            String nomeSemExtensao = nomeDoArquivoOriginal.substring(
+                    0,
+                    nomeDoArquivoOriginal.lastIndexOf(".")
+            );
+
+            File outputFile = new File(
+                    inputFile.getParentFile(),
+                    nomeSemExtensao + "-converted." + extensaoDestino
+            );
 
             ProcessBuilder processBuilder = new ProcessBuilder(
                     "ffmpeg",
@@ -40,6 +47,16 @@ public class FfmpegAudioConverter {
         } catch (IOException | InterruptedException e) {
             Thread.currentThread().interrupt();
             throw new DomainException("Não foi possível executar o FFmpeg.");
+        }
+    }
+
+    private void validarNomeDoArquivo(String nomeDoArquivoOriginal) {
+        if (nomeDoArquivoOriginal == null || nomeDoArquivoOriginal.isBlank()) {
+            throw new DomainException("O nome do arquivo original é obrigatório.");
+        }
+
+        if (!nomeDoArquivoOriginal.contains(".")) {
+            throw new DomainException("Nome do arquivo original inválido.");
         }
     }
 }
