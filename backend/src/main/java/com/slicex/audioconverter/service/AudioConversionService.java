@@ -42,8 +42,10 @@ public class AudioConversionService {
         AudioConversion audioConversion = mapper.toEntity(request);
         audioConversion.iniciarProcessamento();
 
+        File inputFile = null;
+
         try {
-            File inputFile = File.createTempFile("input-", "-" + file.getOriginalFilename());
+            inputFile = File.createTempFile("input-", "-" + file.getOriginalFilename());
             file.transferTo(inputFile);
 
             File outputFile = ffmpegAudioConverter.convert(
@@ -63,6 +65,11 @@ public class AudioConversionService {
         } catch (Exception ex) {
             audioConversion.falhar();
             throw new DomainException("Erro ao converter o áudio.");
+        }
+        finally {
+            if (inputFile != null && inputFile.exists()) {
+                inputFile.delete();
+            }
         }
     }
 }
