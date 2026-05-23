@@ -2,6 +2,7 @@ package com.slicex.audioconverter.service;
 
 import com.slicex.audioconverter.config.AudioUploadConfig;
 import com.slicex.audioconverter.domain.AudioConversion;
+import com.slicex.audioconverter.domain.AudioFormat;
 import com.slicex.audioconverter.domain.exception.DomainException;
 import com.slicex.audioconverter.dto.AudioConversionRequest;
 import com.slicex.audioconverter.external.FfmpegAudioConverter;
@@ -22,6 +23,14 @@ public class AudioConversionService {
     private final FfmpegAudioConverter ffmpegAudioConverter;
 
     public File convert(MultipartFile file, AudioConversionRequest request) {
+        String nomeArquivo = file.getOriginalFilename();
+        String extensao = nomeArquivo.substring(nomeArquivo.lastIndexOf(".") + 1).toUpperCase();
+        AudioFormat formatoDoArquivo = AudioFormat.valueOf(extensao);
+
+        if (formatoDoArquivo != request.formatoPreConversao()) {
+            throw new DomainException("O formato informado não corresponde ao arquivo enviado.");
+        }
+
         if (file == null || file.isEmpty()) {
             throw new DomainException("O arquivo de áudio é obrigatório.");
         }
