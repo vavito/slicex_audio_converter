@@ -1,5 +1,6 @@
 package com.slicex.audioconverter.controller;
 
+import com.slicex.audioconverter.domain.AudioFormat;
 import com.slicex.audioconverter.dto.AudioConversionRequest;
 import com.slicex.audioconverter.service.AudioConversionService;
 import lombok.RequiredArgsConstructor;
@@ -22,9 +23,17 @@ public class AudioConversionController {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Resource> convert(
-            @RequestPart("file") MultipartFile file,
-            @RequestPart("request") AudioConversionRequest request
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("nomeDoArquivoOriginal") String nomeDoArquivoOriginal,
+            @RequestParam("formatoPreConversao") AudioFormat formatoPreConversao,
+            @RequestParam("formatoPosConversao") AudioFormat formatoPosConversao
     ) {
+        AudioConversionRequest request = new AudioConversionRequest(
+                nomeDoArquivoOriginal,
+                formatoPreConversao,
+                formatoPosConversao
+        );
+
         File outputFile = service.convert(file, request);
 
         Resource resource = new FileSystemResource(outputFile);
