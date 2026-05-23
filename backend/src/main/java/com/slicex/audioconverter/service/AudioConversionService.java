@@ -39,7 +39,8 @@ public class AudioConversionService {
 
             File outputFile = ffmpegAudioConverter.convert(
                     inputFile,
-                    audioConversion.getFormatoPosConversao()
+                    audioConversion.getFormatoPosConversao(),
+                    audioConversion.getNomeDoArquivoOriginal()
             );
 
             audioConversion.concluir();
