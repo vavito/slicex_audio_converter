@@ -3,7 +3,6 @@ package com.slicex.audioconverter.mapper;
 import com.slicex.audioconverter.domain.AudioConversion;
 import com.slicex.audioconverter.domain.exception.DomainException;
 import com.slicex.audioconverter.dto.AudioConversionRequest;
-import com.slicex.audioconverter.dto.AudioConversionResponse;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -17,17 +16,6 @@ public class AudioConversionMapper {
                 audioConversionRequest.nomeDoArquivoOriginal(),
                 audioConversionRequest.formatoPreConversao(),
                 audioConversionRequest.formatoPosConversao()
-        );
-    }
-
-    public AudioConversionResponse toResponseDTO(AudioConversion audioConversion) {
-        if (audioConversion == null) return null;
-
-        return new AudioConversionResponse(
-                audioConversion.getNomeDoArquivoOriginal(),
-                audioConversion.getFormatoPreConversao(),
-                audioConversion.getFormatoPosConversao(),
-                audioConversion.getStatusDaConversao()
         );
     }
 }
