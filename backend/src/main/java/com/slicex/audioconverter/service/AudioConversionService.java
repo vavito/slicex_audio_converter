@@ -23,9 +23,7 @@ public class AudioConversionService {
     private final FfmpegAudioConverter ffmpegAudioConverter;
 
     public File convert(MultipartFile file, AudioConversionRequest request) {
-        String nomeArquivo = file.getOriginalFilename();
-        String extensao = nomeArquivo.substring(nomeArquivo.lastIndexOf(".") + 1).toUpperCase();
-        AudioFormat formatoDoArquivo = AudioFormat.valueOf(extensao);
+        AudioFormat formatoDoArquivo = obterFormatoDoArquivo(file);
 
         if (formatoDoArquivo != request.formatoPreConversao()) {
             throw new DomainException("O formato informado não corresponde ao arquivo enviado.");
@@ -70,6 +68,24 @@ public class AudioConversionService {
             if (inputFile != null && inputFile.exists()) {
                 inputFile.delete();
             }
+        }
+    }
+
+    private AudioFormat obterFormatoDoArquivo(MultipartFile file) {
+        String nomeArquivo = file.getOriginalFilename();
+
+        if (nomeArquivo == null || !nomeArquivo.contains(".")) {
+            throw new DomainException("Arquivo sem extensão válida.");
+        }
+
+        String extensao = nomeArquivo
+                .substring(nomeArquivo.lastIndexOf(".") + 1)
+                .toUpperCase();
+
+        try {
+            return AudioFormat.valueOf(extensao);
+        } catch (IllegalArgumentException ex) {
+            throw new DomainException("Formato de arquivo não suportado. Envie apenas MP3 ou WAV.");
         }
     }
 }
