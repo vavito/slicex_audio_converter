@@ -1,5 +1,6 @@
 package com.slicex.audioconverter.external;
 
+import lombok.extern.slf4j.Slf4j;
 import com.slicex.audioconverter.domain.AudioFormat;
 import com.slicex.audioconverter.domain.exception.DomainException;
 import org.springframework.stereotype.Component;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.io.IOException;
 
+@Slf4j
 @Component
 public class FfmpegAudioConverter {
 
@@ -36,9 +38,13 @@ public class FfmpegAudioConverter {
             processBuilder.redirectErrorStream(true);
 
             Process process = processBuilder.start();
+
+            String logs = new String(process.getInputStream().readAllBytes());
+
             int exitCode = process.waitFor();
 
             if (exitCode != 0 || !outputFile.exists()) {
+                log.error("Erro ao executar o FFmpeg. Exit code: {}. Logs: {}", exitCode, logs);
                 throw new DomainException("Erro ao converter o áudio com FFmpeg.");
             }
 
