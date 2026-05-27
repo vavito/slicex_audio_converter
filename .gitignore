@@ -1,6 +1,9 @@
 # Ignore specific root files
 /projeto_slicex_audio_converter.pdf
 /projeto_slicex_audio_converter.txt
+/CODIGOS_COMPLETOS.txt
+/rascunho
 
 # Ignore IntelliJ IDEA project files at the repository root
 /.idea/
+
