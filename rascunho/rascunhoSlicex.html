@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Slicex Audio Converter — MP3 e WAV</title>
+  <meta name="description" content="Converta áudio entre MP3 e WAV com alta fidelidade. Rápido, seguro e confiável." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <div class="page-container">
+
+    <!-- ============== HEADER / NAVBAR ============== -->
+    <header>
+      <nav class="navbar">
+        <div class="navbar-left">
+          <a href="/" class="navbar-logo">Slicex</a>
+          <ul class="navbar-links">
+            <li><a href="/" class="active">Home</a></li>
+            <li><a href="/contato">Contato</a></li>
+          </ul>
+        </div>
+
+        <div class="navbar-version">
+          <span class="navbar-version-dot"></span>
+          V 1.0.2 / Estável
+        </div>
+
+        <button class="navbar-hamburger" aria-label="Menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </nav>
+    </header>
+
+    <!-- ============== MAIN / HOME ============== -->
+    <main class="conteudo-principal">
+
+      <section class="hero">
+
+        <!-- Texto (esquerda) -->
+        <div class="hero-text">
+          <h1 class="hero-title">
+            Converta seu <span class="accent">áudio</span> com precisão.
+          </h1>
+          <p class="hero-subtitle">
+            A Slicex oferece conversão de áudio com foco em simplicidade e
+            integridade. Feito para engenheiros, desenhado para criadores.
+          </p>
+          <div class="hero-tags">
+            <span>Seguro</span>
+            <span class="divider">/</span>
+            <span>Confiável</span>
+            <span class="divider">/</span>
+            <span>Ultra rápido</span>
+          </div>
+        </div>
+
+        <!-- Card conversor (direita) -->
+        <div class="converter-wrapper">
+          <div class="converter-card">
+
+            <!-- Toggle MP3 ⇄ WAV -->
+            <div class="format-toggle">
+              <div class="format-side">
+                <span class="format-label">De</span>
+                <span class="format-value">MP3</span>
+              </div>
+
+              <button class="format-swap-btn" aria-label="Trocar formato">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M7 16V4M7 4L3 8M7 4l4 4" />
+                  <path d="M17 8v12m0 0 4-4m-4 4-4-4" />
+                </svg>
+              </button>
+
+              <div class="format-side">
+                <span class="format-label">Para</span>
+                <span class="format-value">WAV</span>
+              </div>
+            </div>
+
+            <!-- ===== ESTADO 1: IDLE ===== -->
+            <div class="state state-idle">
+              <button class="btn-primary">Selecionar Arquivo</button>
+              <input type="file" accept=".mp3,.wav" hidden />
+              <p class="file-hint">Tamanho máximo: 50MB por arquivo</p>
+            </div>
+
+            <!-- ===== ESTADO 2: CONVERTING (oculto por padrão) ===== -->
+            <!--
+            <div class="state status-converting">
+              <div class="spinner"></div>
+              <p>Convertendo musica.mp3...</p>
+            </div>
+            -->
+
+            <!-- ===== ESTADO 3: SUCCESS (oculto por padrão) ===== -->
+            <!--
+            <div class="state status-success">
+              <div class="success-check">✓</div>
+              <h3 class="success-title">Conversão concluída</h3>
+              <p class="success-filename">musica-converted.wav</p>
+              <div class="success-actions">
+                <button class="btn-download">Baixar Arquivo</button>
+                <button class="btn-secondary">Converter novamente</button>
+              </div>
+            </div>
+            -->
+
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+
+    <!-- ============== FOOTER ============== -->
+    <footer>
+      <div class="footer-inner">
+
+        <div class="footer-brand">
+          <span class="footer-logo">Slicex</span>
+          <p class="footer-copy">
+            &copy; 2024 SLICEX AUDIO LABS. TODOS OS DIREITOS RESERVADOS.
+          </p>
+        </div>
+
+        <div class="footer-columns">
+          <div class="footer-column">
+            <span class="footer-column-title">Legal</span>
+            <a href="#">Termos</a>
+            <a href="#">Privacidade</a>
+          </div>
+          <div class="footer-column">
+            <span class="footer-column-title">Social</span>
+            <a href="#">Instagram</a>
+            <a href="#">Twitter</a>
+          </div>
+        </div>
+
+      </div>
+    </footer>
+
+  </div>
+
+</body>
+</html>
