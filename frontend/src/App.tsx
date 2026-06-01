@@ -9,7 +9,7 @@ export default function App() {
       <Navbar />
 
       <main className="flex-1">
-        <section className="mx-auto grid max-w-7xl gap-16 px-6 py-16 lg:grid-cols-2 lg:py-24">
+        <section className="mx-auto grid max-w-7xl gap-16 px-6 py-14 lg:grid-cols-2 lg:gap-28 lg:py-12">
           <CabecalhoHero />
           <CardConversor />
         </section>

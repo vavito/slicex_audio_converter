@@ -48,3 +48,10 @@ body {
 .animate-fade-up {
   animation: fade-in-up 0.8s cubic-bezier(0.32, 0.72, 0, 1) both;
 }
+
+@keyframes spin-conversor {
+  to { transform: rotate(360deg); }
+}
+.spinner-conversor {
+  animation: spin-conversor 0.8s linear infinite;
+}
