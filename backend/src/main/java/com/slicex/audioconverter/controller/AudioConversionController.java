@@ -1,8 +1,9 @@
 package com.slicex.audioconverter.controller;
 
 import com.slicex.audioconverter.domain.AudioFormat;
+import com.slicex.audioconverter.dto.AudioConversionJobResponse;
 import com.slicex.audioconverter.dto.AudioConversionRequest;
-import com.slicex.audioconverter.service.AudioConversionService;
+import com.slicex.audioconverter.service.queue.AudioConversionQueueService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -13,28 +14,44 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/audio/conversions")
 @RequiredArgsConstructor
 public class AudioConversionController {
 
-    private final AudioConversionService service;
+    private final AudioConversionQueueService queueService;
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Resource> convert(
+    public ResponseEntity<AudioConversionJobResponse> convert(
             @RequestParam("file") MultipartFile file,
             @RequestParam("nomeDoArquivoOriginal") String nomeDoArquivoOriginal,
             @RequestParam("formatoPreConversao") AudioFormat formatoPreConversao,
             @RequestParam("formatoPosConversao") AudioFormat formatoPosConversao
-    ) {
+    ) throws IOException {
         AudioConversionRequest request = new AudioConversionRequest(
                 nomeDoArquivoOriginal,
                 formatoPreConversao,
                 formatoPosConversao
         );
 
-        File outputFile = service.convert(file, request);
+        File inputFile = File.createTempFile("input-", "-" + file.getOriginalFilename());
+        file.transferTo(inputFile);
+
+        return ResponseEntity
+                .accepted()
+                .body(queueService.enqueue(inputFile, request));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<AudioConversionJobResponse> getStatus(@PathVariable String id) {
+        return ResponseEntity.ok(queueService.getStatus(id));
+    }
+
+    @GetMapping("/{id}/download")
+    public ResponseEntity<Resource> download(@PathVariable String id) {
+        File outputFile = queueService.getOutputFile(id);
 
         Resource resource = new FileSystemResource(outputFile);
 
