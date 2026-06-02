@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.io.IOException;
 
+import java.util.concurrent.TimeUnit;
+
 @Slf4j
 @Component
 public class FfmpegAudioConverter {
@@ -39,9 +41,17 @@ public class FfmpegAudioConverter {
 
             Process process = processBuilder.start();
 
+            boolean finished = process.waitFor(2, TimeUnit.MINUTES);
+
             String logs = new String(process.getInputStream().readAllBytes());
 
-            int exitCode = process.waitFor();
+            if (!finished) {
+                process.destroyForcibly();
+                log.error("Timeout ao executar FFmpeg. Logs: {}", logs);
+                throw new DomainException("A conversão demorou demais e foi cancelada.");
+            }
+
+            int exitCode = process.exitValue();
 
             if (exitCode != 0 || !outputFile.exists()) {
                 log.error("Erro ao executar o FFmpeg. Exit code: {}. Logs: {}", exitCode, logs);
