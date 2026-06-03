@@ -3,6 +3,7 @@ package com.slicex.audioconverter.controller;
 import com.slicex.audioconverter.domain.AudioFormat;
 import com.slicex.audioconverter.dto.AudioConversionJobResponse;
 import com.slicex.audioconverter.dto.AudioConversionRequest;
+import com.slicex.audioconverter.service.AudioFileValidationService;
 import com.slicex.audioconverter.service.queue.AudioConversionQueueService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.FileSystemResource;
@@ -22,6 +23,7 @@ import java.io.IOException;
 public class AudioConversionController {
 
     private final AudioConversionQueueService queueService;
+    private final AudioFileValidationService validationService;
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<AudioConversionJobResponse> convert(
@@ -35,6 +37,8 @@ public class AudioConversionController {
                 formatoPreConversao,
                 formatoPosConversao
         );
+
+        validationService.validate(file, formatoPreConversao);
 
         File inputFile = File.createTempFile("input-", "-" + file.getOriginalFilename());
         file.transferTo(inputFile);
