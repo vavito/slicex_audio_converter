@@ -1,4 +1,3 @@
-// src/components/ModalDeErro.tsx
 import { useEffect } from "react";
 
 type ModalDeErroProps = {

@@ -1,12 +1,8 @@
-// src/services/audioConversionService.ts
-
 const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:8080";
 
-// 50 MB — alinhado ao limite mostrado na UI.
 export const TAMANHO_MAXIMO_EM_BYTES = 50 * 1024 * 1024;
 
-// Tempo máximo total que o frontend espera pela conversão (fila + processamento).
-const TIMEOUT_TOTAL_MS = 2 * 60 * 1000; // 2 minutos
+const TIMEOUT_TOTAL_MS = 2 * 60 * 1000;
 const INTERVALO_DE_POLLING_MS = 1500;
 
 export type CodigoDeErroDeConversao =
@@ -37,7 +33,7 @@ export async function converterAudio(
   formatoOrigem: string,
   formatoDestino: string,
 ): Promise<Blob> {
-  // 1) Validação local — evita ida ao servidor e o "Failed to fetch".
+
   if (arquivo.size > TAMANHO_MAXIMO_EM_BYTES) {
     throw new ErroDeConversao(
       "ARQUIVO_MUITO_GRANDE",
@@ -45,7 +41,6 @@ export async function converterAudio(
     );
   }
 
-  // 2) Enfileira a conversão no backend.
   const formData = new FormData();
   formData.append("file", arquivo);
   formData.append("nomeDoArquivoOriginal", arquivo.name);
@@ -63,7 +58,6 @@ export async function converterAudio(
 
   const job = (await respostaDeEnfileiramento.json()) as RespostaDeJob;
 
-  // 3) Polling do status até concluir, falhar ou estourar o timeout.
   const limite = Date.now() + TIMEOUT_TOTAL_MS;
 
   while (Date.now() < limite) {
@@ -119,7 +113,6 @@ async function chamarApi(url: string, init: RequestInit): Promise<Response> {
 }
 
 async function traduzirErroDeResposta(resposta: Response): Promise<ErroDeConversao> {
-  // 413 = Payload Too Large (Spring / proxy podem retornar antes do handler).
   if (resposta.status === 413) {
     return new ErroDeConversao(
       "ARQUIVO_MUITO_GRANDE",

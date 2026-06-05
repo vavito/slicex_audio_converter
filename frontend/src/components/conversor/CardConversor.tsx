@@ -1,4 +1,3 @@
-// src/components/conversor/CardConversor.tsx
 import { useState } from "react";
 import { SeletorDeFormato } from "./SeletorDeFormato";
 import { EstadoOcioso } from "./EstadoOcioso";
