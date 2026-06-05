@@ -2,7 +2,6 @@ package com.slicex.audioconverter.controller;
 
 import com.slicex.audioconverter.dto.AudioConversionJobResponse;
 import com.slicex.audioconverter.domain.AudioConversionStatus;
-import com.slicex.audioconverter.domain.AudioFormat;
 import com.slicex.audioconverter.domain.exception.DomainException;
 import com.slicex.audioconverter.service.AudioFileValidationService;
 import com.slicex.audioconverter.service.queue.AudioConversionQueueService;
@@ -14,7 +13,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
