@@ -1,10 +1,7 @@
 # Ignore specific root files
-/projeto_slicex_audio_converter.pdf
-/projeto_slicex_audio_converter.txt
-/CODIGOS_COMPLETOS.txt
-/rascunho
-/backend/important-modules.txt
+/docs_escopo
+.repomix.yml
+repomix-output.xml
 
 # Ignore IntelliJ IDEA project files at the repository root
 /.idea/
-
