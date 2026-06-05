@@ -1,7 +1,7 @@
 # 🎵 Slicex Audio Converter
 
 ![GitHub language count](https://img.shields.io/github/languages/count/vavito/slicex_audio_converter?style=for-the-badge)
-![Status](https://img.shields.io/badge/Status-Em%20desenvolvimento-yellow?style=for-the-badge)
+![Status](https://img.shields.io/badge/Status-Conclu%C3%ADdo-brightgreen?style=for-the-badge)
 
 Aplicação web de conversão de áudio desenvolvida com **Spring Boot** no backend e **React + TypeScript** no frontend.
 
