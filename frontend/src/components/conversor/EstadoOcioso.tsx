@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState, type DragEvent } from "react";
 
 type EstadoOciosoProps = {
   aoSelecionarArquivo: (arquivo: File) => void;
@@ -6,6 +6,7 @@ type EstadoOciosoProps = {
 
 export function EstadoOcioso({ aoSelecionarArquivo }: EstadoOciosoProps) {
   const referenciaDoInputDeArquivo = useRef<HTMLInputElement>(null);
+  const [estaArrastando, setEstaArrastando] = useState(false);
 
   function abrirSeletorDeArquivo() {
     referenciaDoInputDeArquivo.current?.click();
@@ -19,8 +20,54 @@ export function EstadoOcioso({ aoSelecionarArquivo }: EstadoOciosoProps) {
     aoSelecionarArquivo(arquivoEscolhido);
   }
 
+  function aoArrastarSobre(evento: DragEvent<HTMLDivElement>) {
+    evento.preventDefault();
+    setEstaArrastando(true);
+  }
+
+  function aoSairDoArrasto(evento: DragEvent<HTMLDivElement>) {
+    evento.preventDefault();
+    setEstaArrastando(false);
+  }
+
+  function aoSoltarArquivo(evento: DragEvent<HTMLDivElement>) {
+    evento.preventDefault();
+    setEstaArrastando(false);
+    const arquivoSolto = evento.dataTransfer.files?.[0];
+    if (!arquivoSolto) return;
+    aoSelecionarArquivo(arquivoSolto);
+  }
+
   return (
     <div className="space-y-4">
+      <div
+        onDragOver={aoArrastarSobre}
+        onDragEnter={aoArrastarSobre}
+        onDragLeave={aoSairDoArrasto}
+        onDrop={aoSoltarArquivo}
+        onClick={abrirSeletorDeArquivo}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(evento) => {
+          if (evento.key === "Enter" || evento.key === " ") {
+            evento.preventDefault();
+            abrirSeletorDeArquivo();
+          }
+        }}
+        className={`flex cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed px-6 py-10 text-center transition-all ${
+          estaArrastando
+            ? "border-primary bg-primary/10"
+            : "border-white/15 bg-background/40 hover:border-primary/40 hover:bg-background/60"
+        }`}
+      >
+        <span className="text-sm font-medium text-foreground">
+          Arraste e solte seu arquivo aqui
+        </span>
+        <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+          ou clique para selecionar
+        </span>
+      </div>
+
       <button
         type="button"
         onClick={abrirSeletorDeArquivo}
